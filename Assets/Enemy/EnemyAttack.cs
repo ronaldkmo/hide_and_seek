@@ -38,10 +38,13 @@ public class EnemyAttack : MonoBehaviour
         if (distanceToTarget <= maxDistanceToTarget)  {
 
             // Chase the player :)
+            // can also use transform.LookAt(playerTransform);
+
             Vector3 lookVector = playerTransform.position - transform.position;
+            lookVector.y = 0;
             Quaternion rotation = Quaternion.LookRotation(lookVector);
-            rotation.z = 0;
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.01f);
+            
             transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
     }
