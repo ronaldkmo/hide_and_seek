@@ -1442,6 +1442,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyObject
       objectReference: {fileID: 0}
+    - target: {fileID: 1697901061516050518, guid: f680aaca4cf1e81489611060307fbc36, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 7194032664698418583, guid: f680aaca4cf1e81489611060307fbc36, type: 3}
       propertyPath: playerTransform
       value: 

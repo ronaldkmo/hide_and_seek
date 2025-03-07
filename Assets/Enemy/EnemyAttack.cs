@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
@@ -22,7 +23,7 @@ public class EnemyAttack : MonoBehaviour
     void Update() {
         Attack();
     }
-    
+
     bool IsReadyToAttack() {
         if (tick < delayTimer) {
             tick += Time.deltaTime;
@@ -39,13 +40,13 @@ public class EnemyAttack : MonoBehaviour
 
             // Chase the player :)
             // can also use transform.LookAt(playerTransform);
-
             Vector3 lookVector = playerTransform.position - transform.position;
             lookVector.y = 0;
             Quaternion rotation = Quaternion.LookRotation(lookVector);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.01f);
             
             transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+
         }
     }
 
