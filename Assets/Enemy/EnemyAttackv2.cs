@@ -4,17 +4,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
 
-public class EnemyAttack : MonoBehaviour
+public class EnemyAttacv2 : MonoBehaviour
 {
     private Vector3 moveDirection = Vector3.zero;
 
     [SerializeField] Transform playerTransform;
     Transform enemyTransform;
-    [SerializeField] float maxDistanceToTarget = 6f;
-
     [SerializeField] float moveSpeed = 1f;
     
     [SerializeField] float delayTimer = 2f;
+    [SerializeField] private float fovDist = 3f;
+    [SerializeField] private float fovAngle = 75; 
+    
     float tick;
     void Start() {
         tick = delayTimer;
@@ -34,19 +35,20 @@ public class EnemyAttack : MonoBehaviour
  
     void Attack() {
         float distanceToTarget = Vector3.Distance(playerTransform.position, enemyTransform.position);
-        
-        bool attackReady = IsReadyToAttack();
-        if (distanceToTarget <= maxDistanceToTarget)  {
 
+        bool attackReady = IsReadyToAttack();
+        Vector3 lookVector = playerTransform.position - transform.position;
+        float dotValue = Vector3.Dot(lookVector, transform.forward);
+        float normDotValue = Vector3.Dot(lookVector.normalized, transform.forward.normalized);
+        float angle = Mathf.Rad2Deg * Mathf.Acos(normDotValue); 
+
+        if (dotValue <= fovDist && dotValue > 0 && angle <= fovAngle/2) {
             // Chase the player :)
             // can also use transform.LookAt(playerTransform);
-            Vector3 lookVector = playerTransform.position - transform.position;
             lookVector.y = 0;
             Quaternion rotation = Quaternion.LookRotation(lookVector);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.01f);
-            
             transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-
         }
     }
 
@@ -62,5 +64,15 @@ public class EnemyAttack : MonoBehaviour
                 #endif
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {        
+        Handles.color = new Color(1, 1, 0, 0.3f);
+        Vector3 currentPos = transform.position;
+        currentPos.y += 1.5f;
+        Handles.DrawSolidArc(currentPos, transform.up, transform.forward, fovAngle/2, fovDist);
+        Handles.DrawSolidArc(currentPos, -transform.up, transform.forward, fovAngle/2, fovDist);
+
     }
 }
