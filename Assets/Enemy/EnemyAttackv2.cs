@@ -37,12 +37,15 @@ public class EnemyAttacv2 : MonoBehaviour
         float distanceToTarget = Vector3.Distance(playerTransform.position, enemyTransform.position);
 
         bool attackReady = IsReadyToAttack();
-        Vector3 lookVector = playerTransform.position - transform.position;
-        float dotValue = Vector3.Dot(lookVector, transform.forward);
-        float normDotValue = Vector3.Dot(lookVector.normalized, transform.forward.normalized);
-        float angle = Mathf.Rad2Deg * Mathf.Acos(normDotValue); 
 
-        if (dotValue <= fovDist && dotValue > 0 && angle <= fovAngle/2) {
+        // the vector that specifies the direction of the CCTV and the joker
+        Vector3 lookVector = playerTransform.position - transform.position;
+        //float dotValue = Vector3.Dot(lookVector, transform.forward);
+        
+        float normDotValue = Vector3.Dot(lookVector.normalized, transform.forward.normalized);
+        float angle = Mathf.Rad2Deg * Mathf.Acos(normDotValue);
+
+        if (lookVector.magnitude <= fovDist && lookVector.magnitude > 0 && angle <= fovAngle/2) {
             // Chase the player :)
             // can also use transform.LookAt(playerTransform);
             lookVector.y = 0;
