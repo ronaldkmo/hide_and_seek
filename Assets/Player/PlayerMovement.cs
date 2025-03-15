@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     CharacterController characterController;
-    Transform playerContainer;
+    Transform playerContainer, cameraContainer;
+    private Camera playerCamera;
     public float speed = 2f;
     public float jumpSpeed = 2f;
     public float mouseSensitivity = 2f;
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     void Start() {
         Cursor.visible = false;
         characterController = GetComponent<CharacterController>();
+        playerCamera = GetComponentInChildren<Camera>();
     }    
     void Update(){
         Movement();
@@ -53,5 +55,8 @@ public class PlayerMovement : MonoBehaviour
         rotateY -= Input.GetAxis("Mouse Y") * mouseSensitivity;
         rotateY = Mathf.Clamp(rotateY, lookUpClamp, lookDownClamp);
         transform.Rotate(0f, rotateX, 0f);
+        
+        playerCamera.transform.localRotation = Quaternion.Euler(rotateY, 0f, 0f);
+
     }
 }
